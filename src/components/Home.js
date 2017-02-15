@@ -15,8 +15,9 @@ const {
 
 import { Actions } from 'react-native-router-flux';
 
-
 import firebase from 'firebase';
+import Backend from '../Backend';
+
 
 
 
@@ -25,7 +26,7 @@ var Login = React.createClass({
     return (
       <View>
         <LoginButton
-          readPermissions={["public_profile"]}
+          readPermissions={["public_profile email"]}
           onLoginFinished={
             (error, result) => {
               if (error) {
@@ -36,10 +37,14 @@ var Login = React.createClass({
                 AccessToken.getCurrentAccessToken().then(
                   (data) => {
                     // Build Firebase credential with the Facebook access token.
-                    var credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+                    var token=data.accessToken;
+                    var credential = firebase.auth.FacebookAuthProvider.credential(token);
 
                     // Sign in with credential from the Google user.
-                    firebase.auth().signInWithCredential(credential).catch(function(error) {
+                    firebase.auth().signInWithCredential(credential).then(function(user){
+                      alert(user.uid+" "+token);
+                    })
+                    .catch(function(error) {
                       // Handle Errors here.
                       var errorCode = error.code;
                       var errorMessage = error.message;
@@ -70,7 +75,7 @@ export default class Home extends React.Component {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         console.log(JSON.stringify(user));
-        alert("hey");
+        //alert("hey");
       } else {
         // No user is signed in.
       }

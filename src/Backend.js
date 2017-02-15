@@ -30,6 +30,14 @@ class Backend {
     //firebase.auth().signOut();
 
   }
+  saveNewUser(token){
+    this.messagesRef = firebase.database().ref('messages/'+this.getUid());
+    this.messagesRef.push({
+      token: token,
+
+    });
+
+  }
   // retrieve the messages from the Backend
   loadMessages(callback) {
     this.messagesRef = firebase.database().ref('messages/'+this.getUid());

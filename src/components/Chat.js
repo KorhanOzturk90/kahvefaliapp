@@ -49,7 +49,7 @@ export default class Chat extends React.Component {
 
   componentDidMount() {
     console.log(this.props.name)
-    alert(this.props.token)
+    
     Backend.loadMessages((message) => {
       this.setState((previousState) => {
         return {
